@@ -8,7 +8,11 @@ const App = () => {
 
     const addPerson = (event) => {
         event.preventDefault()
-        setPersons(prevState => [...prevState, {name: newName}])
+        if (!persons.some(person => person.name === newName)) {
+            setPersons(prevState => [...prevState, {name: newName}])
+        } else {
+            alert(`${newName} is already added to phonebook`)
+        }
     }
 
     return (
