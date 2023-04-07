@@ -19,7 +19,9 @@ const App = () => {
         if (persons.some(person => person.name === newName)) {
             alert(`${newName} is already added to phonebook`)
         } else {
-            setPersons(prevState => [...prevState, {name: newName, number: newNumber}])
+            axios
+                .post('http://localhost:3001/persons', {name: newName, number: newNumber})
+                .then(response => setPersons(prevState => [...prevState, {...response.data}]))
         }
     }
 
