@@ -25,6 +25,20 @@ const App = () => {
         }
     }
 
+    const deletePerson = (event) => {
+        event.preventDefault()
+        const id = event.target.parentElement.id
+        if (window.confirm(`Delete ${persons[id].name} ?`)) {
+            personService
+                .deleteOne(persons[id].id)
+                .then(setPersons(prevState =>
+                    prevState.filter(person =>
+                        person.id !== persons[id].id
+                    )
+                ))
+        }
+    }
+
     useEffect(() => {
         personService
             .getAll()
@@ -38,7 +52,7 @@ const App = () => {
             <h2>Add a new</h2>
             <PersonForm newName={newName} handleNameInput={handleNameInput} newNumber={newNumber} handleNumberInput={handleNumberInput} addPerson={addPerson} />
             <h2>Numbers</h2>
-            <Persons persons={persons} searchToken={searchToken} />
+            <Persons persons={persons} searchToken={searchToken} deletePerson={deletePerson} />
         </div>
     )
 }

@@ -1,4 +1,4 @@
-const Persons = ({persons, searchToken}) => {
+const Persons = ({persons, searchToken, deletePerson}) => {
     return (
         <div>
             {
@@ -9,7 +9,11 @@ const Persons = ({persons, searchToken}) => {
                             .includes(searchToken.toLowerCase())
                     })
                     .map((person, id) => {
-                        return <div key={id}>{person.name} {person.number}</div>
+                        return (
+                            <div key={id} id={id}>
+                                {person.name} {person.number} <button onClick={deletePerson}>delete</button>
+                            </div>
+                        )
                     })
             }
         </div>
