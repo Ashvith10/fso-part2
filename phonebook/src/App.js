@@ -16,8 +16,17 @@ const App = () => {
     
     const addPerson = (event) => {
         event.preventDefault()
-        if (persons.some(person => person.name === newName)) {
-            alert(`${newName} is already added to phonebook`)
+        const person = persons.find(person => person.name === newName)
+        if (person !== undefined) {
+            if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+                personService
+                    .update(person.id, {name: newName, number: newNumber})
+                    .then(response =>
+                        setPersons(prevState => 
+                                prevState.map(obj => obj.id === response.data.id ? response.data : obj)
+                        )
+                    )
+            }
         } else {
             personService
                 .create({name: newName, number: newNumber})
@@ -30,7 +39,7 @@ const App = () => {
         const id = event.target.parentElement.id
         if (window.confirm(`Delete ${persons[id].name} ?`)) {
             personService
-                .deleteOne(persons[id].id)
+                .destroy(persons[id].id)
                 .then(setPersons(prevState =>
                     prevState.filter(person =>
                         person.id !== persons[id].id
