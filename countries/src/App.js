@@ -11,6 +11,13 @@ const App = () => {
 
     const handleFilterInput = (event) => setToken(event.target.value)
 
+    const chooseCountry = (event) => setSelectedCountry(
+        filteredCountries
+            .find((country) =>
+                country.name.common.toLowerCase() === event.target.parentElement.id
+            )
+    )
+
     useEffect(() => {
         RESTCountries
             .getAll()
@@ -31,7 +38,7 @@ const App = () => {
     return (
         <div className="App">
             <Search token={token} handleFilterInput={handleFilterInput} />
-            <List filteredCountries={filteredCountries} selectedCountry={selectedCountry} />
+            <List filteredCountries={filteredCountries} selectedCountry={selectedCountry} chooseCountry={chooseCountry}/>
         </div>
     )
 }

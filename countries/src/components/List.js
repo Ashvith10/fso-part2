@@ -1,4 +1,4 @@
-const List = ({filteredCountries, selectedCountry}) => {
+const List = ({filteredCountries, selectedCountry, chooseCountry}) => {
     if (filteredCountries.length > 10){
         return <div>Too many matches, specify another filter</div>
     } else if (selectedCountry !== null) {
@@ -34,7 +34,7 @@ const List = ({filteredCountries, selectedCountry}) => {
             <div className="filtered-countries">
                 {filteredCountries.map((filteredCountry, id) => 
                     <div key={id} id={filteredCountry.name.common.toLowerCase()}>
-                        {filteredCountry.name.common}
+                        {filteredCountry.name.common} <input type="button" value="show" onClick={chooseCountry}/>
                     </div>
                 )}
             </div>
