@@ -1,4 +1,21 @@
+import {useState, useEffect} from 'react'
+import OpenWeatherMap from '../services/OpenWeatherMap'
+
 const List = ({filteredCountries, selectedCountry, chooseCountry}) => {
+    const [weatherData, setWeatherData] = useState([])
+
+    useEffect(() => {
+        if (selectedCountry) {
+            selectedCountry.capital.map(capital => 
+                OpenWeatherMap
+                    .getWeatherData(capital)
+                    .then(response => setWeatherData(prevState => [...prevState, response.data]))
+            )
+        } else {
+            setWeatherData([])
+        }
+    }, [selectedCountry])
+    
     if (filteredCountries.length > 10){
         return <div>Too many matches, specify another filter</div>
     } else if (selectedCountry !== null) {
@@ -26,6 +43,20 @@ const List = ({filteredCountries, selectedCountry, chooseCountry}) => {
                         </ul>
                     </div>
                     <img className="flag" src={selectedCountry.flags.png} alt=""/>
+                    <div className="weather-details">
+                        {weatherData.map((data, id) =>
+                            <div key={id} className={`weather-in-${data.name}`}>
+                                <h2>Weather in {data.name}</h2>
+                                <div className={`temp-in-${data.name}`}>
+                                    temperature {data.main.temp} Celsius
+                                </div>
+                                <img src={`https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`} alt=""/>
+                                <div className={`wind-in-${data.name}`}>
+                                    wind {data.wind.speed} m/s
+                                </div>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         )
